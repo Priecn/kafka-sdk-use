@@ -1,4 +1,4 @@
-package org.example.demo;
+package org.example.demo.producer;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
