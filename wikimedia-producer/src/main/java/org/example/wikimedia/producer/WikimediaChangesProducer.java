@@ -3,6 +3,7 @@ package org.example.wikimedia.producer;
 import com.launchdarkly.eventsource.EventSource;
 import com.launchdarkly.eventsource.MessageEvent;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
@@ -28,7 +29,11 @@ public class WikimediaChangesProducer {
         properties.setProperty("bootstrap.servers", BOOTSTRAP_SERVER);
         properties.setProperty("key.serializer", StringSerializer.class.getName());
         properties.setProperty("value.serializer", StringSerializer.class.getName());
-        properties.setProperty("compression.type", "zstd");
+
+        // set high throughput producer config
+        properties.setProperty(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
+        properties.setProperty(ProducerConfig.LINGER_MS_CONFIG, "20"); // 20 ms
+        properties.setProperty(ProducerConfig.BATCH_SIZE_CONFIG, Integer.toString(32 * 1024)); // 32 KB
 
         // create the Producer
         try (KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties)) {
