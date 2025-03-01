@@ -1,3 +1,4 @@
 rootProject.name = 'kafka-sdk-use'
 include 'basics'
+include 'wikimedia-producer'
 
